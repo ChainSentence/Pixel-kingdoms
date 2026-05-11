@@ -597,9 +597,9 @@ Examples to define in Chapter 4:
 
 ```text
 Undead = bone_pit
-Wood Elves = living grove / elder grove
-Humans = mercenary hall / guild hall
-Goblins = plunder den / scrap pit
+Wood Elves = living_forest
+Humans = knightly_order / knight_academy / war_college
+Goblins = plunder_den
 ```
 
 ### Vault
@@ -673,6 +673,59 @@ The stored state remains:
 ```
 
 This lets the team rename, rebalance, or extend race flavor without migrating army state.
+
+---
+
+## Special Undead Bone State
+
+Undead captive-converted units should not be mixed into normal minion stacks.
+
+They are a special class mechanic with different creation rules, balance limits, and economy restrictions.
+
+```text
+UndeadBoneState {
+  boneAttackers
+  boneDefenders
+  lifetimeRaised
+  lifetimeShattered
+}
+```
+
+### Why Separate Bones From Minions
+
+Normal minions are trained through the standard economy.
+
+```text
+normal minions = worker / attacker / defender + rank + amount
+```
+
+Undead bones are created by sacrificing captives through the Bone Pit.
+
+```text
+captive -> bone attacker / bone defender
+```
+
+They should be combat-only in v1.
+
+```text
+allowed: boneAttackers
+allowed: boneDefenders
+not allowed: boneWorkers
+```
+
+This prevents the Undead from turning captive conversion into an unlimited worker/gold engine. Their identity is flooding the battlefield, not becoming the best economy race.
+
+The Bone Pit definition in Chapter 4 should decide:
+
+```text
+conversion rate
+conversion cost
+bone attacker/defender strength
+caps or unlocks by Bone Pit rank
+how Brittle Bones affects them
+```
+
+If undead labor is ever added later, it should be a separate, tightly capped rule, not automatic worker conversion.
 
 ---
 
@@ -878,6 +931,7 @@ ResourceState
 CaptiveState
 BuildingState
 ArmyState
+UndeadBoneState
 KingdomDailyState
 EconomyStats
 WarfareStats
@@ -913,17 +967,18 @@ Chapter 3 locks these technical directions:
 2. Buildings are fixed HOMM3-style slots.
 3. Building stable state is kind + rank.
 4. Minion stable state is kind + rank + amount.
-5. Race-specific minion names live in definitions.
-6. Core v1 resources are gold, captives, ranked weapons, and ranked armour.
-7. Skip wood/stone/ore for v1.
-8. Captives have their own state and daily escape reporting.
-9. Population uses large full-number citizen counts.
-10. castle_core drives citizens/day.
-11. The world starts at Day 1 on launch and runs forever.
-12. Login after a new day shows a Daily Kingdom Report popup.
-13. Ads and subscriptions are benefit/boost systems, not building state.
-14. Lord/Mascot appearance stores selected option keys; allowed cosmetics live in definitions.
-15. Lord specialty is a once-per-account minor strategic boost stored as a key; specialty effects live in definitions.
+5. Undead captive-converted bones use a special combat-only UndeadBoneState, not normal minion stacks.
+6. Race-specific minion names live in definitions.
+7. Core v1 resources are gold, captives, ranked weapons, and ranked armour.
+8. Skip wood/stone/ore for v1.
+9. Captives have their own state and daily escape reporting.
+10. Population uses large full-number citizen counts.
+11. castle_core drives citizens/day.
+12. The world starts at Day 1 on launch and runs forever.
+13. Login after a new day shows a Daily Kingdom Report popup.
+14. Ads and subscriptions are benefit/boost systems, not building state.
+15. Lord/Mascot appearance stores selected option keys; allowed cosmetics live in definitions.
+16. Lord specialty is a once-per-account minor strategic boost stored as a key; specialty effects live in definitions.
 ```
 
 ---
