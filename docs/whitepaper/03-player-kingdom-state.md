@@ -217,6 +217,7 @@ The Lord/Mascot is both profile identity and race/class expression.
 ```text
 Lord {
   race
+  specialty
   skinTone
   hairType
   hairColor
@@ -225,7 +226,7 @@ Lord {
 }
 ```
 
-The stable state stores selected option keys only. The allowed cosmetic options live in definitions.
+The stable state stores selected option keys only. The allowed cosmetic options and specialty effects live in definitions.
 
 Examples:
 
@@ -242,8 +243,46 @@ Design split:
 
 ```text
 race/class = gameplay identity
+specialty = once-per-account minor strategic boost
 appearance = visual identity
 ```
+
+### Lord Specialty
+
+Each kingdom should choose one Lord specialty during account/kingdom creation.
+
+The specialty is a small permanent boost inspired by Heroes of Might and Magic 3 hero specialties. It should matter, but it should not dominate race choice or make one account permanently broken.
+
+Stable state should store only the selected specialty key:
+
+```text
+specialty = "drillmaster" | "defender" | "raider" | "merchant" | "keeper" | "commander" | TBD
+```
+
+The effect belongs in a specialty definition table:
+
+```text
+LordSpecialtyDefinition {
+  key
+  displayName
+  description
+  effect
+  constraints
+}
+```
+
+Possible examples to balance in Chapter 4:
+
+```text
+drillmaster = slightly cheaper/faster training
+commander = small tactics/combat coordination bonus
+defender = small homeland defense bonus
+raider = small attack/scavenge bonus
+merchant = small gold/economy bonus
+keeper = lower captive escape rate
+```
+
+Specialty should be selected once per account/kingdom. Changing it later should either be impossible or require a very explicit rare reset item/rule, because it is part of identity and long-term strategy.
 
 ---
 
@@ -884,6 +923,7 @@ Chapter 3 locks these technical directions:
 12. Login after a new day shows a Daily Kingdom Report popup.
 13. Ads and subscriptions are benefit/boost systems, not building state.
 14. Lord/Mascot appearance stores selected option keys; allowed cosmetics live in definitions.
+15. Lord specialty is a once-per-account minor strategic boost stored as a key; specialty effects live in definitions.
 ```
 
 ---
@@ -907,6 +947,7 @@ Chapter 4 should also define:
 class_hall names per race
 race-specific minion names per rank
 race bonuses and debuffs
+Lord specialty options and balance
 captives and scavenging rules per race
 initial balance constraints
 ```
